@@ -1,0 +1,17 @@
+<div class="row {{renderFinished}}">
+    <div class="col-md-12">
+        <h3>
+            <a href="#" ng-click="goToSearch()">&larr;</a>
+            Search results
+        </h3>
+        {{errorMessage}}
+
+        <table class="table-striped">
+            <tr ng-repeat="movie in searchResults.Search">
+                <td>
+                    <a href="javascript:;" ng-click="getMovieDetail(movie.imdbID)">{{movie.Title}}</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
