@@ -1,4 +1,54 @@
-moviesApp = angular.module('MoviesApp', ['ngRoute', 'ngResource']);
+angular.module('services', ['ngResource'])
+	.factory("moviesApi", function ($resource) {
+		var apiBaseUrl = 'http://www.omdbapi.com';
+
+		function requestTransformer(data, headers){
+			//console.log(data);
+			//data.awesome = 'Yes';
+			return data;
+		}
+
+		function responseTransformer(data, headers){
+			if (typeof(data.Error) !== 'undefined') {
+				alert(data.Error);
+			}
+
+			return data;
+		}
+
+		function getMethod(endpoint, params, callback) {
+			params.callback = 'JSON_CALLBACK';
+			$resource(apiBaseUrl + endpoint , params, {
+				get: {
+					method: 'JSONP',
+					transformRequest: requestTransformer,
+					transformResponse: responseTransformer
+				}
+			}).get(function(response){
+				callback(response);
+			});
+		}
+
+		function postMethod(endpoint, params, callback) {
+			params.callback = 'JSON_CALLBACK';
+			$resource(apiBaseUrl + endpoint , params, {
+				post: {
+					method: 'JSONP',
+					transformRequest: requestTransformer,
+					transformResponse: responseTransformer
+				}
+			}).post(function(response){
+				callback(response);
+			});
+		}
+
+		return {
+			get: getMethod,
+			post: postMethod
+		};
+	});
+
+moviesApp = angular.module('MoviesApp', ['ngRoute', 'ngResource', 'services']);
 
 moviesApp.config(['$locationProvider', function($locationProvider){
 	$locationProvider.html5Mode(true);
@@ -23,3 +73,4 @@ moviesApp.config(['$routeProvider', function($routeProvider) {
 			redirectTo: '/search'
 		});
 }]);
+

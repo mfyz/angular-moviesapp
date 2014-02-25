@@ -2,8 +2,10 @@
     <div class="col-md-12">
         <h3>
             <a href="#" ng-click="goToSearch()">&larr;</a>
-            {{movieDetails.Title}} ({{movieDetails.Year}})
-            {{errorMessage}}
+	        {{movieDetails.Title}}
+	        <span ng-show="movieDetails.Year">
+	            ({{movieDetails.Year}})
+            </span>
         </h3>
 
         <img ng-src="{{movieDetails.Poster}}" alt=""/>
